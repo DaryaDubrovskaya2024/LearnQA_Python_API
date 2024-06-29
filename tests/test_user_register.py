@@ -3,8 +3,9 @@ from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
-
+@allure.epic("User register cases")
 class TestUserRegister(BaseCase):
+    @allure.tag("Positive")
     def test_create_user_successfully(self):
         data= self.prepare_registration_data()
 
@@ -23,6 +24,7 @@ class TestUserRegister(BaseCase):
         expected_content = f"Users with email '{email}' already exists"
         assert response.content.decode('utf-8') == expected_content, f"Unexpected response content {response.content}"
 
+    @allure.tag("Negative")
     def test_create_user_with_incorrect_email(self):
         email = 'vinkotovexample.com'
         data = self.prepare_registration_data(email)
@@ -48,6 +50,7 @@ class TestUserRegister(BaseCase):
         assert response.content.decode(
             'utf-8') == expected_content, f"Unexpected response content {response.content}"
 
+    @allure.tag("Negative")
     def test_create_user_with_short_name(self):
         data = self.prepare_registration_data()
         data['firstName'] = 'A'
@@ -59,6 +62,7 @@ class TestUserRegister(BaseCase):
         assert response.content.decode(
             'utf-8') == expected_content, f"Unexpected response content {response.content}"
 
+    @allure.tag("Negative")
     def test_create_user_with_long_name(self):
         data = self.prepare_registration_data()
         data['firstName'] = 'A' * 251

@@ -3,7 +3,9 @@ import json
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
+@allure.epic("User edit cases")
 class TestUserEdit(BaseCase):
+    @allure.tag("Positive")
     def test_edit_just_created_user(self):
         user_id, email, password, original_first_name = self.register_new_user()
 
@@ -42,8 +44,7 @@ class TestUserEdit(BaseCase):
             "Wrong name of the user after edit"
         )
 
-
-    # Попытаемся изменить данные пользователя, будучи неавторизованными
+    @allure.tag("Negative")
     def test_edit_user_not_auth(self):
 
         user_id, email, password, original_first_name = self.register_new_user()
@@ -56,9 +57,7 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_code_status(response2, 400)  # Expecting Unauthorized status code
 
-
-
-    # Попытаемся изменить данные пользователя, будучи авторизованными другим пользователем
+    @allure.tag("Negative")
     def test_edit_user_auth_as_other_user(self):
         # Register first user
         register_data1 = self.prepare_registration_data()
@@ -95,7 +94,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response4, 400)
 
 
-    # Попытаемся изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @
+    @allure.tag("Negative")
     def test_edit_user_email_invalid(self):
         user_id, email, password, original_first_name = self.register_new_user()
 
@@ -120,8 +119,7 @@ class TestUserEdit(BaseCase):
         )
         Assertions.assert_code_status(response3, 400)
 
-
-    # Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ
+    @allure.tag("Negative")
     def test_edit_user_first_name_short(self):
         user_id, email, password, original_first_name = self.register_new_user()
 
